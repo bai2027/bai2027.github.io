@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart CO₂e DPP Demo – Packaging Logistics</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h2 { margin-top: 30px; }
+    .panel { border: 1px solid #ccc; padding: 15px; margin-top: 10px; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    button { margin-top: 10px; padding: 8px 12px; }
+    #qr { margin-top: 15px; }
+    .grid { display: flex; gap: 20px; flex-wrap: wrap; }
+    .grid > div { flex: 1; min-width: 300px; }
+  </style>
+</head>
+<body>
+
+<h1>🚛 Smart CO₂e Calculator – Packaging Logistics Demo</h1>
+
+<div class="panel">
+  <h2>📊 Real-Time Fleet Telemetry</h2>
+  <pre id="telemetry"></pre>
+</div>
+
+<div class="panel">
+  <h2>🧠 AI Emission Optimization</h2>
+  <div id="recommendation">
+    <p><strong>Detected Issue:</strong> Fuel consumption above threshold on urban route.</p>
+    <p><strong>Suggested Action:</strong> Reroute to suburban path with lower CO₂e/km</p>
+    <p><strong>Projected Savings:</strong> −15.4 kg CO₂e across delivery batch</p>
+    <p><strong>AI Confidence:</strong> 94%</p>
+    <button onclick="applySwitch()">✅ Apply Route Optimization</button>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>📦 DPP – Before Optimization</h2>
+    <pre id="dppBefore"></pre>
+  </div>
+
+  <div class="panel">
+    <h2>📦 DPP – After Optimization</h2>
+    <pre id="dppAfter">(pending user action)</pre>
+    <canvas id="qr"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<script>
+  const telemetry = {
+    route: "Urban (92 km)",
+    fuel_consumption: "0.33 L/km",
+    co2e_per_km: "0.89 kg CO₂e/km",
+    baseline_co2e: "0.68 kg CO₂e/km"
+  };
+
+  const dppBefore = {
+    product: "Compostable Packaging",
+    delivery_route: "Urban – 92 km",
+    co2e_total: "81.88 kg CO₂e",
+    fleet_unit: "Truck 23",
+    timestamp: "2025-04-20T08:00:00Z"
+  };
+
+  const dppAfter = {
+    product: "Compostable Packaging",
+    delivery_route: "Suburban – 106 km",
+    co2e_total: "66.48 kg CO₂e",
+    corrective_action: "Live routing switch to reduce fuel CO₂e",
+    estimated_savings: "-15.4 kg CO₂e",
+    fleet_unit: "Truck 23",
+    timestamp: new Date().toISOString()
+  };
+
+  document.getElementById("telemetry").textContent = JSON.stringify(telemetry, null, 2);
+  document.getElementById("dppBefore").textContent = JSON.stringify(dppBefore, null, 2);
+
+  function applySwitch() {
+    document.getElementById("dppAfter").textContent = JSON.stringify(dppAfter, null, 2);
+    new QRious({
+      element: document.getElementById('qr'),
+      value: "https://smart-dpp.io/demo/logistics4567",
+      size: 150
+    });
+  }
+</script>
+
+</body>
+</html>
