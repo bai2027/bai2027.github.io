@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart CO₂e DPP Demo – Garment Facility</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h2 { margin-top: 30px; }
+    .panel { border: 1px solid #ccc; padding: 15px; margin-top: 10px; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    button { margin-top: 10px; padding: 8px 12px; }
+    #qr { margin-top: 15px; }
+    .grid { display: flex; gap: 20px; flex-wrap: wrap; }
+    .grid > div { flex: 1; min-width: 300px; }
+  </style>
+</head>
+<body>
+
+<h1>🧵 Smart CO₂e Calculator – Textile Facility Demo</h1>
+
+<div class="panel">
+  <h2>📊 Real-Time Telemetry</h2>
+  <pre id="telemetry"></pre>
+</div>
+
+<div class="panel">
+  <h2>🤖 AI Sustainability Recommendation</h2>
+  <div id="recommendation">
+    <p><strong>Detected Issue:</strong> Excess water use and high CO₂e/kWh from synthetic fabric supplier.</p>
+    <p><strong>Suggested Switch:</strong> Organic Cotton (GreenTextile VN)</p>
+    <p><strong>Projected CO₂e Reduction:</strong> −1.72 kg CO₂e/unit</p>
+    <p><strong>AI Confidence:</strong> 97%</p>
+    <button onclick="applySwitch()">✅ Accept Switch</button>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>📦 DPP – Before Correction</h2>
+    <pre id="dppBefore"></pre>
+  </div>
+
+  <div class="panel">
+    <h2>📦 DPP – After Correction</h2>
+    <pre id="dppAfter">(pending user action)</pre>
+    <canvas id="qr"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<script>
+  const telemetry = {
+    material: "Synthetic Dyed Fabric",
+    water_usage: "95 L/kg",
+    grid_intensity: "0.95 kg CO₂e/kWh",
+    co2_per_unit: "4.20 kg CO₂e"
+  };
+
+  const dppBefore = {
+    material: "Synthetic Dyed Fabric",
+    co2e_per_unit: "4.20",
+    water_usage: "95 L/kg",
+    supplier: "Textile A"
+  };
+
+  const dppAfter = {
+    material: "Organic Cotton",
+    co2e_per_unit: "2.48",
+    water_usage: "38 L/kg",
+    supplier: "GreenTextile VN",
+    corrective_action: "Material switch due to high CO₂e and water usage",
+    timestamp: new Date().toISOString(),
+    estimated_impact: "-1.72 kg CO₂e/unit"
+  };
+
+  document.getElementById("telemetry").textContent = JSON.stringify(telemetry, null, 2);
+  document.getElementById("dppBefore").textContent = JSON.stringify(dppBefore, null, 2);
+
+  function applySwitch() {
+    document.getElementById("dppAfter").textContent = JSON.stringify(dppAfter, null, 2);
+    const qr = new QRious({
+      element: document.getElementById('qr'),
+      value: "https://smart-dpp.io/demo/dpp1234",
+      size: 150
+    });
+  }
+</script>
+
+</body>
+</html>
